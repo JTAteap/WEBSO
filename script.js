@@ -9,22 +9,28 @@ const supabase = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// 🔘 EVENTOS
+
+// 🔘 DOM LISTO
 document.addEventListener("DOMContentLoaded", () => {
+
   document.getElementById("loginBtn").addEventListener("click", login);
   document.getElementById("registerBtn").addEventListener("click", register);
   document.getElementById("postBtn").addEventListener("click", createPost);
+
+  document.getElementById("goRegister").addEventListener("click", showRegister);
+  document.getElementById("goLogin").addEventListener("click", showLogin);
+
 });
 
-// 🔁 CAMBIO DE VISTAS
+// 🔁 VISTAS
 function showRegister() {
-  login.style.display = "none";
-  register.style.display = "block";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("register").style.display = "block";
 }
 
 function showLogin() {
-  register.style.display = "none";
-  login.style.display = "block";
+  document.getElementById("register").style.display = "none";
+  document.getElementById("login").style.display = "block";
 }
 
 // 🧾 REGISTRO
@@ -33,7 +39,10 @@ async function register() {
   const password = document.getElementById("reg-password").value;
   const username = document.getElementById("reg-username").value;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
 
   if (error) return alert(error.message);
 
@@ -42,7 +51,7 @@ async function register() {
     username
   });
 
-  alert("Cuenta creada. Ahora inicia sesión.");
+  alert("Cuenta creada ✔️");
   showLogin();
 }
 
@@ -51,12 +60,16 @@ async function login() {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
   if (error) return alert(error.message);
 
-  login.style.display = "none";
-  app.style.display = "block";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+
   loadFeed();
 }
 
