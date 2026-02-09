@@ -5,27 +5,34 @@
   <title>WEBSO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Supabase -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- AUTH -->
-<div id="auth">
+<!-- LOGIN -->
+<div id="login">
   <h1>WEBSO</h1>
 
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Contraseña">
+  <input id="login-email" placeholder="Email">
+  <input id="login-password" type="password" placeholder="Contraseña">
+
   <button id="loginBtn" type="button">Iniciar sesión</button>
 
-  <hr>
+  <p onclick="showRegister()">¿No tienes cuenta? Regístrate</p>
+</div>
+
+<!-- REGISTER -->
+<div id="register" style="display:none">
+  <h1>Registro WEBSO</h1>
 
   <input id="reg-username" placeholder="Usuario">
   <input id="reg-email" placeholder="Email">
   <input id="reg-password" type="password" placeholder="Contraseña">
+
   <button id="registerBtn" type="button">Crear cuenta</button>
+
+  <p onclick="showLogin()">¿Ya tienes cuenta? Inicia sesión</p>
 </div>
 
 <!-- APP -->
