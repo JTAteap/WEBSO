@@ -3,45 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <title>WEBSO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- AUTH -->
-  <div id="auth" class="auth-container">
-    <h1>WEBSO</h1>
+<div id="auth">
+  <h1>WEBSO 💜</h1>
 
-    <input id="email" type="email" placeholder="Correo" />
-    <input id="password" type="password" placeholder="Contraseña" />
-    <button onclick="login()">Iniciar sesión</button>
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Contraseña">
+  <button id="loginBtn">Iniciar sesión</button>
 
-    <div class="divider">o</div>
+  <hr>
 
-    <input id="reg-username" placeholder="Nombre de usuario" />
-    <input id="reg-email" type="email" placeholder="Correo" />
-    <input id="reg-password" type="password" placeholder="Contraseña" />
-    <button class="secondary" onclick="register()">Crear cuenta</button>
-  </div>
+  <input id="reg-username" placeholder="Usuario">
+  <input id="reg-email" type="email" placeholder="Email">
+  <input id="reg-password" type="password" placeholder="Contraseña">
+  <button id="registerBtn">Crear cuenta</button>
+</div>
 
-  <!-- APP -->
-  <div id="app" class="app-container" style="display:none">
+<div id="app" style="display:none">
+  <header>WEBSO</header>
 
-    <header>
-      <span>WEBSO</span>
-      <button class="logout" onclick="logout()">Salir</button>
-    </header>
+  <select id="emotion">
+    <option value="😊">Feliz</option>
+    <option value="😢">Triste</option>
+    <option value="😡">Enojado</option>
+    <option value="😴">Cansado</option>
+    <option value="❤️">Enamorado</option>
+  </select>
 
-    <div class="post-box">
-      <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
-      <button onclick="post()">Publicar</button>
-    </div>
+  <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
+  <button id="postBtn">Publicar</button>
 
-    <div id="feed"></div>
-  </div>
+  <div id="feed"></div>
+</div>
 
-  <!-- SUPABASE -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="script.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js"></script>
+<script src="script.js"></script>
 </body>
 </html>
