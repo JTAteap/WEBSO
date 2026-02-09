@@ -2,58 +2,28 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>WEBSO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmotiSocial | Login</title>
+  <link rel="stylesheet" href="styles.css">
 
+  <!-- SUPABASE -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login">
-  <h1>WEBSO</h1>
+  <div class="auth-box">
+    <h1>EmotiSocial</h1>
 
-  <input id="login-email" placeholder="Email">
-  <input id="login-password" type="password" placeholder="Contraseña">
+    <input id="loginEmail" type="email" placeholder="Correo">
+    <input id="loginPassword" type="password" placeholder="Contraseña">
 
-  <button id="loginBtn" type="button">Iniciar sesión</button>
+    <!-- MUY IMPORTANTE: type="button" -->
+    <button type="button" id="loginBtn">Iniciar sesión</button>
 
-  <p id="goRegister">¿No tienes cuenta? Regístrate</p>
-</div>
-
-<!-- REGISTER -->
-<div id="register" style="display:none">
-  <h1>Registro WEBSO</h1>
-
-  <input id="reg-username" placeholder="Usuario">
-  <input id="reg-email" placeholder="Email">
-  <input id="reg-password" type="password" placeholder="Contraseña">
-
-  <button id="registerBtn" type="button">Crear cuenta</button>
-
-  <p id="goLogin">¿Ya tienes cuenta? Inicia sesión</p>
-</div>
-
-<!-- APP -->
-<div id="app" style="display:none">
-  <header>WEBSO</header>
-
-  <div class="post-box">
-    <select id="emotion">
-      <option value="😀">😀 Feliz</option>
-      <option value="😢">😢 Triste</option>
-      <option value="😡">😡 Molesto</option>
-      <option value="😴">😴 Cansado</option>
-    </select>
-
-    <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
-    <button id="postBtn" type="button">Publicar</button>
+    <p>¿No tienes cuenta?</p>
+    <a href="register.html">Registrarse</a>
   </div>
 
-  <div id="feed"></div>
-</div>
-
-<script src="script.js"></script>
+  <!-- JS SIEMPRE AL FINAL -->
+  <script src="app.js"></script>
 </body>
 </html>
