@@ -7,48 +7,72 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- INICIO / REGISTRO -->
-    <div id="welcomeScreen" class="screen">
-        <h1>🌈 EmotiSocial</h1>
-        <p>La red social donde tus emociones y talentos brillan</p>
-        <input type="text" id="usernameInput" placeholder="Tu nombre">
-        <button id="enterBtn">Entrar</button>
+    <!-- Pantalla de Inicio de Sesión / Registro -->
+    <div id="login-screen">
+        <h1>EmotiSocial</h1>
+        <input type="text" id="username" placeholder="Nombre de usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Iniciar sesión</button>
+        <p>¿No tienes cuenta? <span onclick="showRegister()">Regístrate</span></p>
     </div>
 
-    <!-- PERFIL Y MURO -->
-    <div id="mainScreen" class="screen hidden">
-        <header>
-            <div class="profile">
-                <span id="usernameDisplay"></span>
-                <select id="moodSelect">
-                    <option value="feliz">😊 Feliz</option>
-                    <option value="triste">😢 Triste</option>
-                    <option value="creativo">🎨 Creativo</option>
-                    <option value="estresado">😫 Estresado</option>
-                    <option value="motivado">💪 Motivado</option>
-                </select>
-            </div>
-            <button id="talentoBtn">🎤 Talento Day</button>
-        </header>
+    <div id="register-screen" style="display:none">
+        <h1>Registro EmotiSocial</h1>
+        <input type="text" id="reg-username" placeholder="Nombre de usuario">
+        <input type="password" id="reg-password" placeholder="Contraseña">
+        <button onclick="register()">Registrarse</button>
+        <p>¿Ya tienes cuenta? <span onclick="showLogin()">Iniciar sesión</span></p>
+    </div>
 
-        <!-- MURO DE AMIGOS -->
-        <section class="wall">
-            <h2>Muro de Amigos</h2>
-            <div class="post-form">
-                <input type="text" id="postInput" placeholder="Comparte algo...">
-                <button id="postBtn">Publicar</button>
-            </div>
-            <div id="postsContainer"></div>
-        </section>
+    <!-- Pantalla Principal -->
+    <div id="main-app" style="display:none">
+        <!-- Barra de navegación -->
+        <nav>
+            <input type="text" id="search-bar" placeholder="Buscar usuarios...">
+            <button onclick="showSection('inicio')">Inicio</button>
+            <button onclick="showSection('talento')">Muro de Talento</button>
+            <button onclick="showSection('emociones')">Emociones</button>
+            <button onclick="showSection('mensajes')">Mensajes</button>
+            <button onclick="showSection('perfil')">Perfil</button>
+            <button onclick="logout()">Cerrar sesión</button>
+        </nav>
 
-        <!-- CHAT SIMULADO -->
-        <section class="chat">
-            <h2>Chat</h2>
-            <div id="chatBox"></div>
-            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
-            <button id="sendChatBtn">Enviar</button>
-        </section>
+        <!-- Secciones -->
+        <div id="inicio" class="section">
+            <h2>Inicio</h2>
+            <div id="feed"></div>
+        </div>
+
+        <div id="talento" class="section" style="display:none">
+            <h2>Muro de Talento</h2>
+            <input type="text" id="talent-input" placeholder="Escribe sobre tu talento o pon enlace de imagen/video">
+            <button onclick="addTalent()">Publicar</button>
+            <div id="talent-feed"></div>
+        </div>
+
+        <div id="emociones" class="section" style="display:none">
+            <h2>Emociones</h2>
+            <input type="text" id="emotion-input" placeholder="Escribe tu estado de ánimo">
+            <button onclick="setEmotion()">Guardar emoción</button>
+            <div id="emotion-feed"></div>
+        </div>
+
+        <div id="mensajes" class="section" style="display:none">
+            <h2>Mensajes</h2>
+            <div id="friends-list"></div>
+            <div id="chat-window" style="display:none">
+                <h3 id="chat-with"></h3>
+                <div id="chat-messages"></div>
+                <input type="text" id="chat-input" placeholder="Escribe un mensaje">
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+
+        <div id="perfil" class="section" style="display:none">
+            <h2>Mi Perfil</h2>
+            <p>Usuario: <span id="profile-name"></span></p>
+            <p>Mi emoción actual: <span id="profile-emotion"></span></p>
+        </div>
     </div>
 
     <script src="script.js"></script>
