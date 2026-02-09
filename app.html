@@ -2,30 +2,30 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>EmotiSocial | Feed</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>WEBSO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="feed-box">
-    <h2>¿Cómo te sientes?</h2>
+<div class="feed-box">
+  <h2>WEBSO</h2>
 
-    <select id="emotion">
-      <option>😊</option>
-      <option>😢</option>
-      <option>😡</option>
-      <option>😴</option>
-    </select>
+  <select id="emotion">
+    <option value="😀">😀 Feliz</option>
+    <option value="😢">😢 Triste</option>
+    <option value="😡">😡 Molesto</option>
+    <option value="😴">😴 Cansado</option>
+  </select>
 
-    <textarea id="postInput" placeholder="Escribe algo..."></textarea>
+  <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
+  <button onclick="createPost()">Publicar</button>
 
-    <button type="button" id="postBtn">Publicar</button>
+  <div id="feed"></div>
+</div>
 
-    <hr>
-    <div id="feed"></div>
-  </div>
-
-  <script src="app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
