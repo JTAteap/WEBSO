@@ -1,20 +1,20 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: #fafafa;
+  background: #f5f5f5;
 }
 
-#auth {
-  max-width: 350px;
+#login, #register {
+  max-width: 360px;
   margin: 80px auto;
   background: white;
   padding: 25px;
   border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,.1);
   text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,.1);
 }
 
-#auth input {
+input {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
@@ -22,10 +22,9 @@ body {
   border: 1px solid #ddd;
 }
 
-#auth button {
+button {
   width: 100%;
   padding: 10px;
-  margin-top: 8px;
   border-radius: 10px;
   border: none;
   background: #6200ee;
@@ -33,13 +32,17 @@ body {
   cursor: pointer;
 }
 
+p {
+  color: #6200ee;
+  cursor: pointer;
+}
+
 header {
   background: white;
   padding: 15px;
-  font-size: 20px;
+  text-align: center;
   font-weight: bold;
   border-bottom: 1px solid #ddd;
-  text-align: center;
 }
 
 .post-box {
@@ -48,24 +51,12 @@ header {
   background: white;
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,.08);
 }
 
-.post-box textarea, select {
+textarea, select {
   width: 100%;
   padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
   margin-bottom: 10px;
-}
-
-.post-box button {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #6200ee;
-  color: white;
 }
 
 #feed {
@@ -79,10 +70,4 @@ header {
   padding: 15px;
   border-radius: 15px;
   margin-bottom: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,.08);
-}
-
-.like {
-  cursor: pointer;
-  user-select: none;
 }
