@@ -11,8 +11,8 @@ body {
 .auth-box, .feed-box {
   background: #1f1f1f;
   padding: 25px;
-  border-radius: 10px;
-  width: 300px;
+  border-radius: 12px;
+  width: 320px;
   text-align: center;
 }
 
@@ -20,7 +20,7 @@ input, textarea, select {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
-  border-radius: 5px;
+  border-radius: 6px;
   border: none;
 }
 
@@ -30,12 +30,17 @@ button {
   background: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 button:hover {
   background: #43a047;
+}
+
+p {
+  color: #4caf50;
+  cursor: pointer;
 }
 
 .card {
