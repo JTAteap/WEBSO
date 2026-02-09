@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>WEBSO</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- AUTH -->
 <div id="auth">
-  <h2>WEBSO</h2>
+  <h1>WEBSO</h1>
 
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Contraseña">
-  <button type="button" onclick="login()">Iniciar sesión</button>
+  <button id="loginBtn" type="button">Iniciar sesión</button>
 
   <hr>
 
   <input id="reg-username" placeholder="Usuario">
   <input id="reg-email" placeholder="Email">
   <input id="reg-password" type="password" placeholder="Contraseña">
-  <button type="button" onclick="register()">Crear cuenta</button>
+  <button id="registerBtn" type="button">Crear cuenta</button>
 </div>
 
-
+<!-- APP -->
 <div id="app" style="display:none">
   <header>WEBSO</header>
 
-  <select id="emotion">
-    <option value="😊">Feliz</option>
-    <option value="😢">Triste</option>
-    <option value="😡">Enojado</option>
-    <option value="😴">Cansado</option>
-    <option value="❤️">Enamorado</option>
-  </select>
+  <div class="post-box">
+    <select id="emotion">
+      <option value="😀">😀 Feliz</option>
+      <option value="😢">😢 Triste</option>
+      <option value="😡">😡 Molesto</option>
+      <option value="😴">😴 Cansado</option>
+    </select>
 
-  <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
-  <button id="postBtn">Publicar</button>
+    <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
+    <button id="postBtn" type="button">Publicar</button>
+  </div>
 
   <div id="feed"></div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 </body>
 </html>
-
-
-
