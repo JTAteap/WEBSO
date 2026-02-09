@@ -1,115 +1,167 @@
-// ELEMENTOS PRINCIPALES
-const welcomeScreen = document.getElementById("welcomeScreen");
-const mainScreen = document.getElementById("mainScreen");
-const usernameInput = document.getElementById("usernameInput");
-const enterBtn = document.getElementById("enterBtn");
-const usernameDisplay = document.getElementById("usernameDisplay");
+// Simulación de base de datos en localStorage
+let currentUser = null;
 
-const moodSelect = document.getElementById("moodSelect");
-
-const postInput = document.getElementById("postInput");
-const postBtn = document.getElementById("postBtn");
-const postsContainer = document.getElementById("postsContainer");
-
-const chatInput = document.getElementById("chatInput");
-const sendChatBtn = document.getElementById("sendChatBtn");
-const chatBox = document.getElementById("chatBox");
-
-const talentoBtn = document.getElementById("talentoBtn");
-
-// DATOS SIMULADOS
-let posts = [];
-let chatMessages = [];
-
-// ENTRAR A LA APP
-enterBtn.addEventListener("click", () => {
-    const username = usernameInput.value.trim();
-    if(username !== ""){
-        usernameDisplay.textContent = username;
-        welcomeScreen.classList.add("hidden");
-        mainScreen.classList.remove("hidden");
-        updateMoodDisplay();
-    }
-});
-
-// CAMBIO DE ESTADO DE ÁNIMO
-moodSelect.addEventListener("change", updateMoodDisplay);
-
-function updateMoodDisplay(){
-    const mood = moodSelect.value;
-    const colors = {
-        feliz: "#fff59d",
-        triste: "#90caf9",
-        creativo: "#f48fb1",
-        estresado: "#ef9a9a",
-        motivado: "#a5d6a7"
-    };
-    mainScreen.style.background = colors[mood] + "33"; // color de fondo con transparencia
+// Mostrar login / register
+function showRegister() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('register-screen').style.display = 'block';
 }
 
-// PUBLICAR EN EL MURO
-postBtn.addEventListener("click", () => {
-    const text = postInput.value.trim();
-    if(text !== ""){
-        const post = {
-            username: usernameDisplay.textContent,
-            mood: moodSelect.value,
-            text
-        };
-        posts.push(post);
-        renderPosts();
-        postInput.value = "";
-    }
-});
+function showLogin() {
+    document.getElementById('register-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'block';
+}
 
-function renderPosts(){
-    postsContainer.innerHTML = "";
-    posts.slice().reverse().forEach(post => {
-        const div = document.createElement("div");
-        div.classList.add("post");
-        div.style.background = moodColor(post.mood);
-        div.textContent = `${post.username} (${post.mood}): ${post.text}`;
-        postsContainer.appendChild(div);
+// Registro
+function register() {
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
+    if(!username || !password) { alert("Llena todos los campos"); return; }
+
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    if(users.find(u=>u.username===username)) { alert("Usuario ya existe"); return; }
+
+    users.push({username,password,emotion:'',talents:[],messages:{}});
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("Registro exitoso");
+    showLogin();
+}
+
+// Login
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let user = users.find(u=>u.username===username && u.password===password);
+    if(!user) { alert("Usuario o contraseña incorrectos"); return; }
+    currentUser = user;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-app').style.display='block';
+    updateProfile();
+    showSection('inicio');
+    updateFeed();
+    updateTalentFeed();
+    updateEmotionFeed();
+    updateFriends();
+}
+
+// Logout
+function logout() {
+    currentUser = null;
+    document.getElementById('main-app').style.display='none';
+    document.getElementById('login-screen').style.display='block';
+}
+
+// Cambiar secciones
+function showSection(section) {
+    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+    document.getElementById(section).style.display='block';
+}
+
+// Perfil
+function updateProfile() {
+    document.getElementById('profile-name').innerText = currentUser.username;
+    document.getElementById('profile-emotion').innerText = currentUser.emotion || 'No definido';
+}
+
+// Emociones
+function setEmotion() {
+    const emotion = document.getElementById('emotion-input').value;
+    if(!emotion) return;
+    currentUser.emotion = emotion;
+    saveUser();
+    updateProfile();
+    updateEmotionFeed();
+    document.getElementById('emotion-input').value = '';
+}
+
+// Feed de emociones
+function updateEmotionFeed() {
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let container = document.getElementById('emotion-feed');
+    container.innerHTML = '';
+    users.forEach(u=>{
+        container.innerHTML += `<div class="card"><strong>${u.username}</strong>: ${u.emotion || 'No definido'}</div>`;
     });
 }
 
-function moodColor(mood){
-    const colors = {
-        feliz: "#fff59d",
-        triste: "#90caf9",
-        creativo: "#f48fb1",
-        estresado: "#ef9a9a",
-        motivado: "#a5d6a7"
-    };
-    return colors[mood];
+// Talento
+function addTalent() {
+    const talent = document.getElementById('talent-input').value;
+    if(!talent) return;
+    currentUser.talents.push(talent);
+    saveUser();
+    updateTalentFeed();
+    document.getElementById('talent-input').value='';
 }
 
-// CHAT SIMULADO
-sendChatBtn.addEventListener("click", () => {
-    const msg = chatInput.value.trim();
-    if(msg !== ""){
-        const message = {
-            username: usernameDisplay.textContent,
-            text: msg
-        };
-        chatMessages.push(message);
-        renderChat();
-        chatInput.value = "";
-    }
-});
-
-function renderChat(){
-    chatBox.innerHTML = "";
-    chatMessages.slice().forEach(msg => {
-        const div = document.createElement("div");
-        div.classList.add("chat-message");
-        div.textContent = `${msg.username}: ${msg.text}`;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
+function updateTalentFeed() {
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let container = document.getElementById('talent-feed');
+    container.innerHTML = '';
+    users.forEach(u=>{
+        u.talents.forEach(t=>{
+            container.innerHTML += `<div class="card"><strong>${u.username}</strong>: ${t}</div>`;
+        });
     });
 }
 
-// TALENTO DAY
-talentoBtn.addEventListener("click", () => {
-    alert("Talento Day: Próximamente podrás subir tus dibujos, música y más!");
-});
+// Feed general (Inicio)
+function updateFeed() {
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let container = document.getElementById('feed');
+    container.innerHTML = '';
+    users.forEach(u=>{
+        container.innerHTML += `<div class="card"><strong>${u.username}</strong><br>
+        Emoción: ${u.emotion || 'No definido'}<br>
+        Talentos: ${u.talents.join(', ') || 'Ninguno'}</div>`;
+    });
+}
+
+// Mensajes
+function updateFriends() {
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let container = document.getElementById('friends-list');
+    container.innerHTML='';
+    users.forEach(u=>{
+        if(u.username!==currentUser.username){
+            container.innerHTML+=`<div class="card" onclick="openChat('${u.username}')">${u.username}</div>`;
+        }
+    });
+}
+
+function openChat(friend) {
+    document.getElementById('chat-window').style.display='block';
+    document.getElementById('chat-with').innerText=friend;
+    loadMessages(friend);
+}
+
+function sendMessage() {
+    const friend = document.getElementById('chat-with').innerText;
+    const message = document.getElementById('chat-input').value;
+    if(!message) return;
+    if(!currentUser.messages[friend]) currentUser.messages[friend]=[];
+    currentUser.messages[friend].push(`Tú: ${message}`);
+    saveUser();
+    document.getElementById('chat-input').value='';
+    loadMessages(friend);
+}
+
+function loadMessages(friend) {
+    let container = document.getElementById('chat-messages');
+    container.innerHTML='';
+    if(currentUser.messages[friend]){
+        currentUser.messages[friend].forEach(m=>{
+            container.innerHTML+=`<div class="card">${m}</div>`;
+        });
+    }
+}
+
+// Guardar cambios de usuario
+function saveUser() {
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let index = users.findIndex(u=>u.username===currentUser.username);
+    users[index]=currentUser;
+    localStorage.setItem('users', JSON.stringify(users));
+    updateFeed();
+}
