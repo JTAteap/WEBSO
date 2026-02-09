@@ -1,184 +1,123 @@
-// ======= Variables =======
 let currentUser = null;
+let selectedEmotion = "";
 
-// ======= Login / Register =======
-function showRegister() {
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('register-screen').style.display='flex';
+/* LOGIN / REGISTER */
+function showRegister(){
+    loginScreen(false);
+}
+function showLogin(){
+    loginScreen(true);
+}
+function loginScreen(login=true){
+    document.getElementById("login-screen").style.display = login?"flex":"none";
+    document.getElementById("register-screen").style.display = login?"none":"flex";
 }
 
-function showLogin() {
-    document.getElementById('register-screen').style.display='none';
-    document.getElementById('login-screen').style.display='flex';
-}
-
-// Registro
-function register() {
-    const username = document.getElementById('reg-username').value.trim();
-    const password = document.getElementById('reg-password').value.trim();
-    if(!username || !password) { alert("Llena todos los campos"); return; }
-
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    if(users.find(u=>u.username===username)) { alert("Usuario ya existe"); return; }
-
-    users.push({username,password,emotion:'',talents:[],messages:{}});
-    localStorage.setItem('users', JSON.stringify(users));
-    alert("Registro exitoso. Ahora inicia sesión.");
+function register(){
+    const u = regUsername.value.trim();
+    const p = regPassword.value.trim();
+    if(!u||!p) return alert("Completa todo");
+    let users = JSON.parse(localStorage.users||"[]");
+    if(users.find(x=>x.username===u)) return alert("Usuario existe");
+    users.push({username:u,password:p,emotion:null,messages:{}});
+    localStorage.users = JSON.stringify(users);
     showLogin();
 }
 
-// Login
-function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let user = users.find(u=>u.username===username && u.password===password);
-
-    if(!user){ alert("Usuario o contraseña incorrectos"); return; }
-
+function login(){
+    let users = JSON.parse(localStorage.users||"[]");
+    const user = users.find(x=>x.username===username.value && x.password===password.value);
+    if(!user) return alert("Error");
     currentUser = user;
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('register-screen').style.display='none';
-    document.getElementById('main-app').style.display='block';
-
-    updateProfile();
-    showSection('inicio');
-    updateFeed();
-    updateTalentFeed();
-    updateEmotionFeed();
-    updateFriends();
+    loginScreen(false);
+    mainApp.style.display="block";
+    updateUI();
 }
 
-// Logout
-function logout() {
-    currentUser = null;
-    document.getElementById('main-app').style.display='none';
-    document.getElementById('login-screen').style.display='flex';
+/* NAV */
+function showSection(id){
+    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+    document.getElementById(id).style.display="block";
 }
 
-// ======= Navegación =======
-function showSection(section){
-    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
-    document.getElementById(section).style.display='block';
-}
+/* EMOTIONS */
+function selectEmotion(e){ selectedEmotion=e; }
 
-// ======= Perfil =======
-function updateProfile() {
-    document.getElementById('profile-name').innerText = currentUser.username;
-    document.getElementById('profile-emotion').innerText = currentUser.emotion || 'No definido';
-}
-
-// ======= Emociones =======
-function setEmotion() {
-    const emotion = document.getElementById('emotion-input').value.trim();
-    if(!emotion) return;
-    currentUser.emotion = emotion;
+function saveEmotion(){
+    if(!selectedEmotion) return;
+    currentUser.emotion = {emoji:selectedEmotion,text:emotionText.value};
     saveUser();
-    updateProfile();
-    updateEmotionFeed();
-    document.getElementById('emotion-input').value='';
+    updateUI();
+    showSection("inicio");
 }
 
-function updateEmotionFeed() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let container = document.getElementById('emotion-feed');
-    container.innerHTML='';
-    users.forEach(u=>{
-        container.innerHTML += `<div class="card"><strong>${u.username}</strong>: ${u.emotion || 'No definido'}</div>`;
-    });
+/* UI */
+function updateUI(){
+    profileName.innerText = currentUser.username;
+    profileEmotion.innerText = currentUser.emotion ? currentUser.emotion.emoji+" "+currentUser.emotion.text : "Sin estado";
+    loadEmotionFeed();
+    loadFeed();
+    loadFriends();
 }
 
-// ======= Talento =======
-function addTalent() {
-    const talent = document.getElementById('talent-input').value.trim();
-    if(!talent) return;
-    currentUser.talents.push(talent);
-    saveUser();
-    updateTalentFeed();
-    document.getElementById('talent-input').value='';
-}
-
-function updateTalentFeed() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let container = document.getElementById('talent-feed');
-    container.innerHTML='';
-    users.forEach(u=>{
-        u.talents.forEach(t=>{
-            container.innerHTML += `<div class="card"><strong>${u.username}</strong>: ${t}</div>`;
-        });
-    });
-}
-
-// ======= Feed General =======
-function updateFeed() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let container = document.getElementById('feed');
-    container.innerHTML='';
-    users.forEach(u=>{
-        container.innerHTML += `<div class="card"><strong>${u.username}</strong><br>
-        Emoción: ${u.emotion || 'No definido'}<br>
-        Talentos: ${u.talents.join(', ') || 'Ninguno'}</div>`;
-    });
-}
-
-// ======= Mensajes =======
-function updateFriends() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let container = document.getElementById('friends-list');
-    container.innerHTML='';
-    users.forEach(u=>{
-        if(u.username!==currentUser.username){
-            container.innerHTML+=`<div class="card" onclick="openChat('${u.username}')">${u.username}</div>`;
+function loadEmotionFeed(){
+    emotionFeed.innerHTML="";
+    JSON.parse(localStorage.users||"[]").forEach(u=>{
+        if(u.emotion){
+            emotionFeed.innerHTML += `<div class="story">${u.emotion.emoji}</div>`;
         }
     });
 }
 
-function openChat(friend){
-    document.getElementById('chat-window').style.display='block';
-    document.getElementById('chat-with').innerText=friend;
-    loadMessages(friend);
+function loadFeed(){
+    feed.innerHTML="";
+    JSON.parse(localStorage.users||"[]").forEach(u=>{
+        if(u.emotion){
+            feed.innerHTML += `
+            <div class="card">
+                <strong>${u.username}</strong>
+                <p>${u.emotion.emoji} ${u.emotion.text||""}</p>
+                <div class="actions">
+                    <span>🤍</span><span>💪</span><span>🙏</span>
+                </div>
+            </div>`;
+        }
+    });
+}
+
+/* CHAT */
+function loadFriends(){
+    friendsList.innerHTML="";
+    JSON.parse(localStorage.users||"[]").forEach(u=>{
+        if(u.username!==currentUser.username){
+            friendsList.innerHTML+=`<div class="card" onclick="openChat('${u.username}')">${u.username}</div>`;
+        }
+    });
+}
+
+function openChat(u){
+    chatWith.innerText=u;
+    loadMessages(u);
 }
 
 function sendMessage(){
-    const friend = document.getElementById('chat-with').innerText;
-    const message = document.getElementById('chat-input').value.trim();
-    if(!message) return;
-    if(!currentUser.messages[friend]) currentUser.messages[friend]=[];
-    currentUser.messages[friend].push(`Tú: ${message}`);
+    const f=chatWith.innerText;
+    if(!currentUser.messages[f]) currentUser.messages[f]=[];
+    currentUser.messages[f].push(chatInput.value);
+    chatInput.value="";
     saveUser();
-    document.getElementById('chat-input').value='';
-    loadMessages(friend);
+    loadMessages(f);
 }
 
-function loadMessages(friend){
-    let container = document.getElementById('chat-messages');
-    container.innerHTML='';
-    if(currentUser.messages[friend]){
-        currentUser.messages[friend].forEach(m=>{
-            container.innerHTML += `<div class="card">${m}</div>`;
-        });
-    }
-}
-
-// ======= Guardar usuario =======
-function saveUser(){
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let index = users.findIndex(u=>u.username===currentUser.username);
-    users[index]=currentUser;
-    localStorage.setItem('users', JSON.stringify(users));
-    updateFeed();
-}
-
-// ======= Buscar usuarios =======
-function searchUsers(){
-    const term = document.getElementById('search-bar').value.toLowerCase();
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    let container = document.getElementById('feed');
-    container.innerHTML='';
-    users.filter(u=>u.username.toLowerCase().includes(term)).forEach(u=>{
-        container.innerHTML += `<div class="card"><strong>${u.username}</strong><br>
-        Emoción: ${u.emotion || 'No definido'}<br>
-        Talentos: ${u.talents.join(', ') || 'Ninguno'}</div>`;
+function loadMessages(f){
+    chatMessages.innerHTML="";
+    (currentUser.messages[f]||[]).forEach(m=>{
+        chatMessages.innerHTML+=`<div class="card">${m}</div>`;
     });
+}
+
+function saveUser(){
+    let users=JSON.parse(localStorage.users);
+    users[users.findIndex(u=>u.username===currentUser.username)]=currentUser;
+    localStorage.users=JSON.stringify(users);
 }
