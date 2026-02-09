@@ -2,28 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>EmotiSocial | Login</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>WEBSO - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SUPABASE -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="auth-box">
-    <h1>EmotiSocial</h1>
+<div class="auth-box">
+  <h1>WEBSO</h1>
 
-    <input id="loginEmail" type="email" placeholder="Correo">
-    <input id="loginPassword" type="password" placeholder="Contraseña">
+  <input id="login-email" placeholder="Email">
+  <input id="login-password" type="password" placeholder="Contraseña">
 
-    <!-- MUY IMPORTANTE: type="button" -->
-    <button type="button" id="loginBtn">Iniciar sesión</button>
+  <button onclick="login()">Iniciar sesión</button>
 
-    <p>¿No tienes cuenta?</p>
-    <a href="register.html">Registrarse</a>
-  </div>
+  <p onclick="window.location.href='register.html'">
+    ¿No tienes cuenta? Regístrate
+  </p>
+</div>
 
-  <!-- JS SIEMPRE AL FINAL -->
-  <script src="app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
