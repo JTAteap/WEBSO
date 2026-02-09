@@ -1,124 +1,52 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  background: #fafafa;
-  color: #222;
+  font-family: system-ui, sans-serif;
+  background: #f2f2f2;
 }
 
-/* AUTH */
-.auth-container {
-  max-width: 360px;
-  margin: 80px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.1);
+#auth, #app {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
   text-align: center;
 }
 
-.auth-container h1 {
-  margin-bottom: 20px;
-  color: #6200ee;
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
-.auth-container input {
+button {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-}
-
-.auth-container button {
-  width: 100%;
-  padding: 12px;
   margin-top: 10px;
-  border: none;
-  border-radius: 10px;
+  padding: 10px;
   background: #6200ee;
   color: white;
-  font-weight: bold;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-}
-
-.auth-container button.secondary {
-  background: #e0e0e0;
-  color: #333;
-}
-
-.divider {
-  margin: 15px 0;
-  color: #aaa;
-}
-
-/* APP */
-.app-container {
-  max-width: 600px;
-  margin: auto;
 }
 
 header {
-  position: sticky;
-  top: 0;
-  background: white;
-  padding: 15px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logout {
-  background: none;
-  border: none;
-  color: #6200ee;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.post-box {
-  background: white;
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
-}
-
-.post-box textarea {
-  width: 100%;
-  border-radius: 12px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  resize: none;
-}
-
-.post-box button {
-  margin-top: 8px;
-  padding: 10px 18px;
-  border-radius: 10px;
-  border: none;
-  background: #6200ee;
-  color: white;
-  cursor: pointer;
-}
-
-/* FEED */
-#feed {
-  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .card {
   background: white;
-  border-radius: 14px;
-  padding: 15px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
 }
 
-.card strong {
-  color: #6200ee;
+.like {
+  cursor: pointer;
+  color: red;
 }
