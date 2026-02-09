@@ -1,95 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>WEBSO</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>WEBSO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen" class="screen">
-    <div class="login-box">
-        <h1>WEBSO</h1>
-        <p class="subtitle">Conecta con emociones, no con apariencias</p>
-        <input id="username" placeholder="Usuario">
-        <input id="password" type="password" placeholder="Contraseña">
-        <button onclick="login()">Entrar</button>
-        <p class="link" onclick="showRegister()">Crear cuenta</p>
+  <!-- AUTH -->
+  <div id="auth" class="auth-container">
+    <h1>WEBSO</h1>
+
+    <input id="email" type="email" placeholder="Correo" />
+    <input id="password" type="password" placeholder="Contraseña" />
+    <button onclick="login()">Iniciar sesión</button>
+
+    <div class="divider">o</div>
+
+    <input id="reg-username" placeholder="Nombre de usuario" />
+    <input id="reg-email" type="email" placeholder="Correo" />
+    <input id="reg-password" type="password" placeholder="Contraseña" />
+    <button class="secondary" onclick="register()">Crear cuenta</button>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="app-container" style="display:none">
+
+    <header>
+      <span>WEBSO</span>
+      <button class="logout" onclick="logout()">Salir</button>
+    </header>
+
+    <div class="post-box">
+      <textarea id="post-input" placeholder="¿Qué estás pensando?"></textarea>
+      <button onclick="post()">Publicar</button>
     </div>
-</div>
 
-<!-- REGISTRO -->
-<div id="register-screen" class="screen" style="display:none">
-    <div class="login-box">
-        <h1>Crear cuenta</h1>
-        <input id="reg-username" placeholder="Usuario">
-        <input id="reg-password" type="password" placeholder="Contraseña">
-        <button onclick="register()">Registrarse</button>
-        <p class="link" onclick="showLogin()">Volver</p>
-    </div>
-</div>
+    <div id="feed"></div>
+  </div>
 
-<!-- APP -->
-<div id="main-app" style="display:none">
-
-    <!-- NAV -->
-    <nav>
-        <h2>WEBSO</h2>
-        <div class="nav-icons">
-            <span onclick="showSection('inicio')">🏠</span>
-            <span onclick="showSection('emociones')">🌈</span>
-            <span onclick="showSection('mensajes')">💬</span>
-            <span onclick="showSection('perfil')">👤</span>
-            <span onclick="logout()">🚪</span>
-        </div>
-    </nav>
-
-    <!-- INICIO / FEED -->
-    <section id="inicio" class="section">
-        <div class="stories" id="emotion-feed"></div>
-        <div id="feed"></div>
-    </section>
-
-    <!-- EMOCIONES -->
-    <section id="emociones" class="section" style="display:none">
-        <h3>¿Cómo te sientes hoy?</h3>
-        <div class="emotion-picker">
-            <button onclick="selectEmotion('😊')">😊</button>
-            <button onclick="selectEmotion('😐')">😐</button>
-            <button onclick="selectEmotion('😢')">😢</button>
-            <button onclick="selectEmotion('😡')">😡</button>
-            <button onclick="selectEmotion('😰')">😰</button>
-        </div>
-        <input id="emotion-text" placeholder="¿Quieres decir algo corto?">
-        <button onclick="saveEmotion()">Publicar estado</button>
-    </section>
-
-    <!-- MENSAJES -->
-    <section id="mensajes" class="section" style="display:none">
-        <div class="chat-layout">
-            <div class="chat-users" id="friends-list"></div>
-            <div class="chat-box">
-                <h4 id="chat-with">Selecciona un chat</h4>
-                <div id="chat-messages"></div>
-                <div class="chat-input">
-                    <input id="chat-input" placeholder="Mensaje">
-                    <button onclick="sendMessage()">➤</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PERFIL -->
-    <section id="perfil" class="section" style="display:none">
-        <h3 id="profile-name"></h3>
-        <p>Estado actual:</p>
-        <div class="status-card" id="profile-emotion"></div>
-    </section>
-
-</div>
-
-<script src="script.js"></script>
+  <!-- SUPABASE -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
 </body>
 </html>
