@@ -1,27 +1,37 @@
-console.log("JS cargado correctamente");
+console.log("JS cargado");
 
 // 🔗 SUPABASE
 const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4";
+const SUPABASE_KEY = "PEGA_AQUI_TU_ANON_PUBLIC_KEY";
 
 const supabase = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
-
-// 🎯 EVENTOS
+// 🔘 EVENTOS
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("loginBtn").addEventListener("click", login);
   document.getElementById("registerBtn").addEventListener("click", register);
   document.getElementById("postBtn").addEventListener("click", createPost);
 });
 
+// 🔁 CAMBIO DE VISTAS
+function showRegister() {
+  login.style.display = "none";
+  register.style.display = "block";
+}
+
+function showLogin() {
+  register.style.display = "none";
+  login.style.display = "block";
+}
+
 // 🧾 REGISTRO
 async function register() {
-  const email = reg-email.value;
-  const password = reg-password.value;
-  const username = reg-username.value;
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
+  const username = document.getElementById("reg-username").value;
 
   const { data, error } = await supabase.auth.signUp({ email, password });
 
@@ -32,21 +42,21 @@ async function register() {
     username
   });
 
-  alert("Cuenta creada. Inicia sesión.");
+  alert("Cuenta creada. Ahora inicia sesión.");
+  showLogin();
 }
 
 // 🔐 LOGIN
 async function login() {
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  });
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) return alert(error.message);
 
-  auth.style.display = "none";
+  login.style.display = "none";
   app.style.display = "block";
-
   loadFeed();
 }
 
@@ -56,19 +66,21 @@ async function createPost() {
 
   await supabase.from("posts").insert({
     user_id: user.id,
-    content: post-input.value,
-    emotion: emotion.value
+    content: document.getElementById("post-input").value,
+    emotion: document.getElementById("emotion").value
   });
 
-  post-input.value = "";
+  document.getElementById("post-input").value = "";
   loadFeed();
 }
 
 // 📰 FEED
 async function loadFeed() {
+  const feed = document.getElementById("feed");
+
   const { data } = await supabase
     .from("posts")
-    .select("id, content, emotion, likes, profiles(username)")
+    .select("content, emotion, profiles(username)")
     .order("created_at", { ascending: false });
 
   feed.innerHTML = "";
@@ -78,7 +90,6 @@ async function loadFeed() {
       <div class="card">
         <strong>@${p.profiles.username}</strong>
         <p>${p.emotion} ${p.content}</p>
-        <span class="like">❤️ ${p.likes || 0}</span>
       </div>
     `;
   });
