@@ -2,85 +2,94 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>WEBSO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmotiSocial 2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Pantalla de inicio de sesión / registro -->
-    <div id="login-screen" class="screen">
-        <div class="login-box">
-            <h1>EmotiSocial</h1>
-            <input type="text" id="username" placeholder="Nombre de usuario">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button class="btn" onclick="login()">Iniciar sesión</button>
-            <p>¿No tienes cuenta? <span class="link" onclick="showRegister()">Regístrate</span></p>
-        </div>
+
+<!-- LOGIN -->
+<div id="login-screen" class="screen">
+    <div class="login-box">
+        <h1>WEBSO</h1>
+        <p class="subtitle">Conecta con emociones, no con apariencias</p>
+        <input id="username" placeholder="Usuario">
+        <input id="password" type="password" placeholder="Contraseña">
+        <button onclick="login()">Entrar</button>
+        <p class="link" onclick="showRegister()">Crear cuenta</p>
     </div>
+</div>
 
-    <div id="register-screen" class="screen" style="display:none">
-        <div class="login-box">
-            <h1>Registro EmotiSocial</h1>
-            <input type="text" id="reg-username" placeholder="Nombre de usuario">
-            <input type="password" id="reg-password" placeholder="Contraseña">
-            <button class="btn" onclick="register()">Registrarse</button>
-            <p>¿Ya tienes cuenta? <span class="link" onclick="showLogin()">Iniciar sesión</span></p>
-        </div>
+<!-- REGISTRO -->
+<div id="register-screen" class="screen" style="display:none">
+    <div class="login-box">
+        <h1>Crear cuenta</h1>
+        <input id="reg-username" placeholder="Usuario">
+        <input id="reg-password" type="password" placeholder="Contraseña">
+        <button onclick="register()">Registrarse</button>
+        <p class="link" onclick="showLogin()">Volver</p>
     </div>
+</div>
 
-    <!-- Pantalla principal -->
-    <div id="main-app" style="display:none">
-        <!-- Barra de navegación -->
-        <nav>
-            <input type="text" id="search-bar" placeholder="Buscar usuarios..." oninput="searchUsers()">
-            <div class="nav-buttons">
-                <button onclick="showSection('inicio')">Inicio</button>
-                <button onclick="showSection('talento')">Muro de Talento</button>
-                <button onclick="showSection('emociones')">Emociones</button>
-                <button onclick="showSection('mensajes')">Mensajes</button>
-                <button onclick="showSection('perfil')">Perfil</button>
-                <button onclick="logout()">Cerrar sesión</button>
-            </div>
-        </nav>
+<!-- APP -->
+<div id="main-app" style="display:none">
 
-        <!-- Secciones -->
-        <div id="inicio" class="section">
-            <h2>Inicio</h2>
-            <div id="feed"></div>
+    <!-- NAV -->
+    <nav>
+        <h2>WEBSO</h2>
+        <div class="nav-icons">
+            <span onclick="showSection('inicio')">🏠</span>
+            <span onclick="showSection('emociones')">🌈</span>
+            <span onclick="showSection('mensajes')">💬</span>
+            <span onclick="showSection('perfil')">👤</span>
+            <span onclick="logout()">🚪</span>
         </div>
+    </nav>
 
-        <div id="talento" class="section" style="display:none">
-            <h2>Muro de Talento</h2>
-            <input type="text" id="talent-input" placeholder="Escribe tu talento o pon enlace de imagen/video">
-            <button onclick="addTalent()" class="btn">Publicar</button>
-            <div id="talent-feed"></div>
+    <!-- INICIO / FEED -->
+    <section id="inicio" class="section">
+        <div class="stories" id="emotion-feed"></div>
+        <div id="feed"></div>
+    </section>
+
+    <!-- EMOCIONES -->
+    <section id="emociones" class="section" style="display:none">
+        <h3>¿Cómo te sientes hoy?</h3>
+        <div class="emotion-picker">
+            <button onclick="selectEmotion('😊')">😊</button>
+            <button onclick="selectEmotion('😐')">😐</button>
+            <button onclick="selectEmotion('😢')">😢</button>
+            <button onclick="selectEmotion('😡')">😡</button>
+            <button onclick="selectEmotion('😰')">😰</button>
         </div>
+        <input id="emotion-text" placeholder="¿Quieres decir algo corto?">
+        <button onclick="saveEmotion()">Publicar estado</button>
+    </section>
 
-        <div id="emociones" class="section" style="display:none">
-            <h2>Emociones</h2>
-            <input type="text" id="emotion-input" placeholder="Escribe tu estado de ánimo">
-            <button onclick="setEmotion()" class="btn">Guardar emoción</button>
-            <div id="emotion-feed"></div>
-        </div>
-
-        <div id="mensajes" class="section" style="display:none">
-            <h2>Mensajes</h2>
-            <div id="friends-list"></div>
-            <div id="chat-window" style="display:none">
-                <h3 id="chat-with"></h3>
+    <!-- MENSAJES -->
+    <section id="mensajes" class="section" style="display:none">
+        <div class="chat-layout">
+            <div class="chat-users" id="friends-list"></div>
+            <div class="chat-box">
+                <h4 id="chat-with">Selecciona un chat</h4>
                 <div id="chat-messages"></div>
-                <input type="text" id="chat-input" placeholder="Escribe un mensaje">
-                <button onclick="sendMessage()" class="btn">Enviar</button>
+                <div class="chat-input">
+                    <input id="chat-input" placeholder="Mensaje">
+                    <button onclick="sendMessage()">➤</button>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div id="perfil" class="section" style="display:none">
-            <h2>Mi Perfil</h2>
-            <p>Usuario: <span id="profile-name"></span></p>
-            <p>Mi emoción actual: <span id="profile-emotion"></span></p>
-        </div>
-    </div>
+    <!-- PERFIL -->
+    <section id="perfil" class="section" style="display:none">
+        <h3 id="profile-name"></h3>
+        <p>Estado actual:</p>
+        <div class="status-card" id="profile-emotion"></div>
+    </section>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
