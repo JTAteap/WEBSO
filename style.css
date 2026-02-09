@@ -1,52 +1,88 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: #f2f2f2;
+  background: #fafafa;
 }
 
-#auth, #app {
-  max-width: 420px;
-  margin: auto;
-  padding: 20px;
-}
-
-h1 {
+#auth {
+  max-width: 350px;
+  margin: 80px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.1);
   text-align: center;
 }
 
-input, textarea, select {
+#auth input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+#auth button {
   width: 100%;
   padding: 10px;
   margin-top: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
+  border-radius: 10px;
+  border: none;
   background: #6200ee;
   color: white;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
 }
 
 header {
-  font-size: 22px;
+  background: white;
+  padding: 15px;
+  font-size: 20px;
   font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.post-box {
+  max-width: 500px;
+  margin: 20px auto;
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+
+.post-box textarea, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
   margin-bottom: 10px;
+}
+
+.post-box button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #6200ee;
+  color: white;
+}
+
+#feed {
+  max-width: 500px;
+  margin: auto;
+  padding: 10px;
 }
 
 .card {
   background: white;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
 }
 
 .like {
   cursor: pointer;
-  color: red;
+  user-select: none;
 }
