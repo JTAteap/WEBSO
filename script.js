@@ -1,3 +1,5 @@
+console.log("JS cargado correctamente");
+
 // 🔗 SUPABASE
 const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4";
@@ -7,67 +9,58 @@ const supabase = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// 🔘 BOTONES
-document.getElementById("loginBtn").onclick = login;
-document.getElementById("registerBtn").onclick = register;
-document.getElementById("postBtn").onclick = createPost;
+
+// 🎯 EVENTOS
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("registerBtn").addEventListener("click", register);
+  document.getElementById("postBtn").addEventListener("click", createPost);
+});
 
 // 🧾 REGISTRO
 async function register() {
-  const email = document.getElementById("reg-email").value;
-  const password = document.getElementById("reg-password").value;
-  const username = document.getElementById("reg-username").value;
+  const email = reg-email.value;
+  const password = reg-password.value;
+  const username = reg-username.value;
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  });
+  const { data, error } = await supabase.auth.signUp({ email, password });
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+  if (error) return alert(error.message);
 
   await supabase.from("profiles").insert({
     id: data.user.id,
     username
   });
 
-  alert("Cuenta creada. Ahora inicia sesión.");
+  alert("Cuenta creada. Inicia sesión.");
 }
 
 // 🔐 LOGIN
-
 async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
   const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
+    email: email.value,
+    password: password.value
   });
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+  if (error) return alert(error.message);
 
-  alert("Sesión iniciada");
+  auth.style.display = "none";
+  app.style.display = "block";
+
+  loadFeed();
 }
 
 // 📝 POST
 async function createPost() {
-  const content = document.getElementById("post-input").value;
-  const emotion = document.getElementById("emotion").value;
   const user = (await supabase.auth.getUser()).data.user;
 
   await supabase.from("posts").insert({
     user_id: user.id,
-    content,
-    emotion
+    content: post-input.value,
+    emotion: emotion.value
   });
 
-  postInput.value = "";
+  post-input.value = "";
   loadFeed();
 }
 
@@ -90,5 +83,3 @@ async function loadFeed() {
     `;
   });
 }
-
-
