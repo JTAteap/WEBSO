@@ -14,22 +14,30 @@ document.getElementById("postBtn").onclick = createPost;
 
 // 🧾 REGISTRO
 async function register() {
-  const email = regEmail.value;
-  const password = regPassword.value;
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
   const username = document.getElementById("reg-username").value;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) return alert(error.message);
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
   await supabase.from("profiles").insert({
     id: data.user.id,
     username
   });
 
-  alert("Cuenta creada, ahora inicia sesión");
+  alert("Cuenta creada. Ahora inicia sesión.");
 }
 
 // 🔐 LOGIN
+
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -39,11 +47,12 @@ async function login() {
     password
   });
 
-  if (error) return alert(error.message);
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-  auth.style.display = "none";
-  app.style.display = "block";
-  loadFeed();
+  alert("Sesión iniciada");
 }
 
 // 📝 POST
@@ -81,4 +90,5 @@ async function loadFeed() {
     `;
   });
 }
+
 
