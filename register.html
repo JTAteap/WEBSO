@@ -2,24 +2,28 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro | EmotiSocial</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>WEBSO - Registro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="auth-box">
-    <h1>Crear cuenta</h1>
+<div class="auth-box">
+  <h1>Registro WEBSO</h1>
 
-    <input id="regUsername" type="text" placeholder="Nombre de usuario">
-    <input id="regEmail" type="email" placeholder="Correo">
-    <input id="regPassword" type="password" placeholder="Contraseña">
+  <input id="reg-username" placeholder="Usuario">
+  <input id="reg-email" placeholder="Email">
+  <input id="reg-password" type="password" placeholder="Contraseña">
 
-    <button type="button" id="registerBtn">Registrarse</button>
+  <button onclick="register()">Crear cuenta</button>
 
-    <a href="index.html">Volver al login</a>
-  </div>
+  <p onclick="window.location.href='index.html'">
+    ¿Ya tienes cuenta? Inicia sesión
+  </p>
+</div>
 
-  <script src="app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
