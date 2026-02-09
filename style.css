@@ -1,35 +1,59 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
     margin: 0;
-    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg,#9C27B0,#E91E63);
+    color: #333;
 }
 
-#login-screen, #register-screen {
-    width: 300px;
-    margin: 100px auto;
-    padding: 30px;
+.screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
     background-color: white;
-    border-radius: 10px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    width: 300px;
 }
 
-input {
+.login-box input {
     width: 80%;
-    margin: 10px 0;
     padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
 
-button {
-    padding: 10px 20px;
+.btn {
+    background-color: #6200ee;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
     margin-top: 10px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #3700b3;
+}
+
+.link {
+    color: #6200ee;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 nav {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     background-color: #6200ee;
     color: white;
@@ -39,15 +63,26 @@ nav {
 }
 
 nav input {
-    width: 200px;
+    width: 250px;
     padding: 5px;
+    border-radius: 5px;
+    border: none;
 }
 
-nav button {
+.nav-buttons button {
+    margin-left: 5px;
     background-color: white;
     color: #6200ee;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: 0.3s;
+}
+
+.nav-buttons button:hover {
+    background-color: #bb86fc;
+    color: white;
 }
 
 .section {
@@ -56,13 +91,16 @@ nav button {
 
 #feed, #talent-feed, #emotion-feed, #friends-list, #chat-messages {
     margin-top: 20px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
 }
 
 .card {
     padding: 10px;
     margin: 10px 0;
-    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    transition: 0.3s;
+}
+
+.card:hover {
+    background-color: #e0e0e0;
 }
