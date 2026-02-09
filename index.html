@@ -3,38 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmotiSocial</title>
+    <title>EmotiSocial 2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Pantalla de Inicio de Sesión / Registro -->
-    <div id="login-screen">
-        <h1>EmotiSocial</h1>
-        <input type="text" id="username" placeholder="Nombre de usuario">
-        <input type="password" id="password" placeholder="Contraseña">
-        <button onclick="login()">Iniciar sesión</button>
-        <p>¿No tienes cuenta? <span onclick="showRegister()">Regístrate</span></p>
+    <!-- Pantalla de inicio de sesión / registro -->
+    <div id="login-screen" class="screen">
+        <div class="login-box">
+            <h1>EmotiSocial</h1>
+            <input type="text" id="username" placeholder="Nombre de usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button class="btn" onclick="login()">Iniciar sesión</button>
+            <p>¿No tienes cuenta? <span class="link" onclick="showRegister()">Regístrate</span></p>
+        </div>
     </div>
 
-    <div id="register-screen" style="display:none">
-        <h1>Registro EmotiSocial</h1>
-        <input type="text" id="reg-username" placeholder="Nombre de usuario">
-        <input type="password" id="reg-password" placeholder="Contraseña">
-        <button onclick="register()">Registrarse</button>
-        <p>¿Ya tienes cuenta? <span onclick="showLogin()">Iniciar sesión</span></p>
+    <div id="register-screen" class="screen" style="display:none">
+        <div class="login-box">
+            <h1>Registro EmotiSocial</h1>
+            <input type="text" id="reg-username" placeholder="Nombre de usuario">
+            <input type="password" id="reg-password" placeholder="Contraseña">
+            <button class="btn" onclick="register()">Registrarse</button>
+            <p>¿Ya tienes cuenta? <span class="link" onclick="showLogin()">Iniciar sesión</span></p>
+        </div>
     </div>
 
-    <!-- Pantalla Principal -->
+    <!-- Pantalla principal -->
     <div id="main-app" style="display:none">
         <!-- Barra de navegación -->
         <nav>
-            <input type="text" id="search-bar" placeholder="Buscar usuarios...">
-            <button onclick="showSection('inicio')">Inicio</button>
-            <button onclick="showSection('talento')">Muro de Talento</button>
-            <button onclick="showSection('emociones')">Emociones</button>
-            <button onclick="showSection('mensajes')">Mensajes</button>
-            <button onclick="showSection('perfil')">Perfil</button>
-            <button onclick="logout()">Cerrar sesión</button>
+            <input type="text" id="search-bar" placeholder="Buscar usuarios..." oninput="searchUsers()">
+            <div class="nav-buttons">
+                <button onclick="showSection('inicio')">Inicio</button>
+                <button onclick="showSection('talento')">Muro de Talento</button>
+                <button onclick="showSection('emociones')">Emociones</button>
+                <button onclick="showSection('mensajes')">Mensajes</button>
+                <button onclick="showSection('perfil')">Perfil</button>
+                <button onclick="logout()">Cerrar sesión</button>
+            </div>
         </nav>
 
         <!-- Secciones -->
@@ -45,15 +51,15 @@
 
         <div id="talento" class="section" style="display:none">
             <h2>Muro de Talento</h2>
-            <input type="text" id="talent-input" placeholder="Escribe sobre tu talento o pon enlace de imagen/video">
-            <button onclick="addTalent()">Publicar</button>
+            <input type="text" id="talent-input" placeholder="Escribe tu talento o pon enlace de imagen/video">
+            <button onclick="addTalent()" class="btn">Publicar</button>
             <div id="talent-feed"></div>
         </div>
 
         <div id="emociones" class="section" style="display:none">
             <h2>Emociones</h2>
             <input type="text" id="emotion-input" placeholder="Escribe tu estado de ánimo">
-            <button onclick="setEmotion()">Guardar emoción</button>
+            <button onclick="setEmotion()" class="btn">Guardar emoción</button>
             <div id="emotion-feed"></div>
         </div>
 
@@ -64,7 +70,7 @@
                 <h3 id="chat-with"></h3>
                 <div id="chat-messages"></div>
                 <input type="text" id="chat-input" placeholder="Escribe un mensaje">
-                <button onclick="sendMessage()">Enviar</button>
+                <button onclick="sendMessage()" class="btn">Enviar</button>
             </div>
         </div>
 
