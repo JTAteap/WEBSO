@@ -2,7 +2,7 @@ console.log("JS cargado");
 
 // 🔗 SUPABASE
 const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
-const SUPABASE_KEY = "PEGA_AQUI_TU_ANON_PUBLIC_KEY";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4";
 
 const supabase = window.supabase.createClient(
   SUPABASE_URL,
@@ -94,3 +94,4 @@ async function loadFeed() {
     `;
   });
 }
+
