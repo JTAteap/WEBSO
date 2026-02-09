@@ -2,29 +2,28 @@
 const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4"; // deja la tuya
 
-const supabase = supabasejs.createClient(
+const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+
 // 🔐 LOGIN
-const loginBtn = document.getElementById("loginBtn");
-if (loginBtn) {
-  loginBtn.addEventListener("click", async () => {
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+loginBtn.addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      alert(error.message);
-    } else {
-      window.location.href = "app.html";
-    }
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
   });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    window.location.href = "app.html";
+  }
+});
 }
 
 // 🧾 REGISTRO
@@ -45,7 +44,7 @@ if (registerBtn) {
       return;
     }
 
-    await supabase.from("profiles").insert({
+    await supabaseClient.from("profiles").insert({
       id: data.user.id,
       username
     });
@@ -64,7 +63,7 @@ if (postBtn) {
 
     const { data: userData } = await supabase.auth.getUser();
 
-    await supabase.from("posts").insert({
+    await supabaseClient.from("posts").insert({
       user_id: userData.user.id,
       content,
       emotion
@@ -80,7 +79,7 @@ async function loadFeed() {
   const feed = document.getElementById("feed");
   if (!feed) return;
 
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from("posts")
     .select("content, emotion, profiles(username)")
     .order("created_at", { ascending: false });
@@ -98,3 +97,4 @@ async function loadFeed() {
 }
 
 loadFeed();
+
