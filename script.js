@@ -1,123 +1,93 @@
-let currentUser = null;
-let selectedEmotion = "";
+// 🔗 SUPABASE CONFIG
+const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4";
 
-/* LOGIN / REGISTER */
-function showRegister(){
-    loginScreen(false);
-}
-function showLogin(){
-    loginScreen(true);
-}
-function loginScreen(login=true){
-    document.getElementById("login-screen").style.display = login?"flex":"none";
-    document.getElementById("register-screen").style.display = login?"none":"flex";
-}
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-function register(){
-    const u = regUsername.value.trim();
-    const p = regPassword.value.trim();
-    if(!u||!p) return alert("Completa todo");
-    let users = JSON.parse(localStorage.users||"[]");
-    if(users.find(x=>x.username===u)) return alert("Usuario existe");
-    users.push({username:u,password:p,emotion:null,messages:{}});
-    localStorage.users = JSON.stringify(users);
-    showLogin();
-}
-
-function login(){
-    let users = JSON.parse(localStorage.users||"[]");
-    const user = users.find(x=>x.username===username.value && x.password===password.value);
-    if(!user) return alert("Error");
-    currentUser = user;
-    loginScreen(false);
-    mainApp.style.display="block";
-    updateUI();
-}
-
-/* NAV */
-function showSection(id){
-    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-    document.getElementById(id).style.display="block";
-}
-
-/* EMOTIONS */
-function selectEmotion(e){ selectedEmotion=e; }
-
-function saveEmotion(){
-    if(!selectedEmotion) return;
-    currentUser.emotion = {emoji:selectedEmotion,text:emotionText.value};
-    saveUser();
-    updateUI();
-    showSection("inicio");
-}
-
-/* UI */
-function updateUI(){
-    profileName.innerText = currentUser.username;
-    profileEmotion.innerText = currentUser.emotion ? currentUser.emotion.emoji+" "+currentUser.emotion.text : "Sin estado";
-    loadEmotionFeed();
+// AUTO LOGIN
+supabase.auth.getSession().then(({ data }) => {
+  if (data.session) {
+    document.getElementById("auth").style.display = "none";
+    document.getElementById("app").style.display = "block";
     loadFeed();
-    loadFriends();
+  }
+});
+
+// REGISTER
+async function register() {
+  const email = reg-email.value;
+  const password = reg-password.value;
+  const username = reg-username.value;
+
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) return alert(error.message);
+
+  await supabase.from("profiles").insert({
+    id: data.user.id,
+    username
+  });
+
+  alert("Cuenta creada, ahora inicia sesión.");
 }
 
-function loadEmotionFeed(){
-    emotionFeed.innerHTML="";
-    JSON.parse(localStorage.users||"[]").forEach(u=>{
-        if(u.emotion){
-            emotionFeed.innerHTML += `<div class="story">${u.emotion.emoji}</div>`;
-        }
-    });
+// LOGIN
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) return alert(error.message);
+
+  document.getElementById("auth").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  loadFeed();
 }
 
-function loadFeed(){
-    feed.innerHTML="";
-    JSON.parse(localStorage.users||"[]").forEach(u=>{
-        if(u.emotion){
-            feed.innerHTML += `
-            <div class="card">
-                <strong>${u.username}</strong>
-                <p>${u.emotion.emoji} ${u.emotion.text||""}</p>
-                <div class="actions">
-                    <span>🤍</span><span>💪</span><span>🙏</span>
-                </div>
-            </div>`;
-        }
-    });
+// LOGOUT
+async function logout() {
+  await supabase.auth.signOut();
+  location.reload();
 }
 
-/* CHAT */
-function loadFriends(){
-    friendsList.innerHTML="";
-    JSON.parse(localStorage.users||"[]").forEach(u=>{
-        if(u.username!==currentUser.username){
-            friendsList.innerHTML+=`<div class="card" onclick="openChat('${u.username}')">${u.username}</div>`;
-        }
-    });
+// POST
+async function post() {
+  const content = document.getElementById("post-input").value;
+  if (!content) return;
+
+  const user = (await supabase.auth.getUser()).data.user;
+
+  await supabase.from("posts").insert({
+    user_id: user.id,
+    content
+  });
+
+  document.getElementById("post-input").value = "";
+  loadFeed();
 }
 
-function openChat(u){
-    chatWith.innerText=u;
-    loadMessages(u);
-}
+// LOAD FEED
+async function loadFeed() {
+  const { data } = await supabase
+    .from("posts")
+    .select("content, created_at, profiles(username)")
+    .order("created_at", { ascending: false });
 
-function sendMessage(){
-    const f=chatWith.innerText;
-    if(!currentUser.messages[f]) currentUser.messages[f]=[];
-    currentUser.messages[f].push(chatInput.value);
-    chatInput.value="";
-    saveUser();
-    loadMessages(f);
-}
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "";
 
-function loadMessages(f){
-    chatMessages.innerHTML="";
-    (currentUser.messages[f]||[]).forEach(m=>{
-        chatMessages.innerHTML+=`<div class="card">${m}</div>`;
-    });
-}
-
-function saveUser(){
-    let users=JSON.parse(localStorage.users);
-    users[users.findIndex(u=>u.username===currentUser.username)]=currentUser;
-    localStorage.users=JSON.stringify(users);
+  data.forEach(p => {
+    feed.innerHTML += `
+      <div class="card">
+        <strong>@${p.profiles.username}</strong>
+        <p>${p.content}</p>
+      </div>
+    `;
+  });
 }
