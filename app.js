@@ -1,77 +1,70 @@
 // 🔗 SUPABASE
 const SUPABASE_URL = "https://jhugcpzjmggnhlnapyjz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpodWdjcHpqbWdnbmhsbmFweWp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NjA5NTIsImV4cCI6MjA4NjIzNjk1Mn0.Nz5BeKKAWb8vsA40-yAgTy4wlK7Bl5iQsfijFkdDfx4"; // deja la tuya
+const SUPABASE_KEY = "PEGA_AQUI_TU_ANON_KEY";
 
-const supabaseClient = supabase.createClient(
+const supabase = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
-
 // 🔐 LOGIN
-loginBtn.addEventListener("click", async () => {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+async function login() {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     alert(error.message);
-  } else {
-    window.location.href = "app.html";
+    return;
   }
-});
+
+  window.location.href = "app.html";
 }
 
 // 🧾 REGISTRO
-const registerBtn = document.getElementById("registerBtn");
-if (registerBtn) {
-  registerBtn.addEventListener("click", async () => {
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
-    const username = document.getElementById("regUsername").value;
+async function register() {
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
+  const username = document.getElementById("reg-username").value;
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password
-    });
+  const { data, error } = await supabase.auth.signUp({ email, password });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-    await supabaseClient.from("profiles").insert({
-      id: data.user.id,
-      username
-    });
-
-    alert("Cuenta creada");
-    window.location.href = "index.html";
+  await supabase.from("profiles").insert({
+    id: data.user.id,
+    username
   });
+
+  alert("Cuenta creada");
+  window.location.href = "index.html";
+}
+
+// 🔒 PROTECCIÓN APP
+async function checkSession() {
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) {
+    window.location.href = "index.html";
+  }
 }
 
 // 📝 POST
-const postBtn = document.getElementById("postBtn");
-if (postBtn) {
-  postBtn.addEventListener("click", async () => {
-    const content = document.getElementById("postInput").value;
-    const emotion = document.getElementById("emotion").value;
+async function createPost() {
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
 
-    const { data: userData } = await supabase.auth.getUser();
-
-    await supabaseClient.from("posts").insert({
-      user_id: userData.user.id,
-      content,
-      emotion
-    });
-
-    document.getElementById("postInput").value = "";
-    loadFeed();
+  await supabase.from("posts").insert({
+    user_id: user.id,
+    content: document.getElementById("post-input").value,
+    emotion: document.getElementById("emotion").value
   });
+
+  document.getElementById("post-input").value = "";
+  loadFeed();
 }
 
 // 📰 FEED
@@ -79,7 +72,7 @@ async function loadFeed() {
   const feed = document.getElementById("feed");
   if (!feed) return;
 
-  const { data } = await supabaseClient
+  const { data } = await supabase
     .from("posts")
     .select("content, emotion, profiles(username)")
     .order("created_at", { ascending: false });
@@ -96,5 +89,8 @@ async function loadFeed() {
   });
 }
 
-loadFeed();
-
+// SOLO SE EJECUTA EN app.html
+if (window.location.pathname.includes("app.html")) {
+  checkSession();
+  loadFeed();
+}
